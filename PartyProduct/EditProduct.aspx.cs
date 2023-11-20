@@ -6,12 +6,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace PartyProduct
 {
     public partial class EditProduct : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        
+        private SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["PartyProductConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["user"] == null)
@@ -21,14 +23,14 @@ namespace PartyProduct
             else
             {
 
-            if (con.State == ConnectionState.Open)
+            if (sqlConnection.State == ConnectionState.Open)
             {
-                con.Close();
+                sqlConnection.Close();
             }
             if (Request.QueryString["id"] != null)
             {
-                con.Open();
-                SqlCommand cmd = con.CreateCommand();
+                sqlConnection.Open();
+                SqlCommand cmd = sqlConnection.CreateCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "select * from product where productId=" + Convert.ToInt32(Request.QueryString["id"].ToString()) + "";
                 cmd.ExecuteNonQuery();
@@ -40,7 +42,7 @@ namespace PartyProduct
                     OldProductNameTextBox.Text = dr["productname"].ToString();
                 }
                 OldProductNameTextBox.Enabled = false;
-                con.Close();
+                sqlConnection.Close();
             }
             else
             {
@@ -68,13 +70,13 @@ namespace PartyProduct
                 }
                 else
                 {
-                    con.Open();
-                    SqlCommand cmd = con.CreateCommand();
+                    sqlConnection.Open();
+                    SqlCommand cmd = sqlConnection.CreateCommand();
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "update product set productname='" + NewProductNameTextBox.Text + "' where productId=" + Convert.ToInt32(Request.QueryString["id"].ToString()) + "";
                     cmd.ExecuteNonQuery();
                     DisplayAlert("Product Updated Successfully....");
-                    con.Close();
+                    sqlConnection.Close();
                 }
                 
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -11,7 +12,7 @@ namespace PartyProduct
 {
     public partial class productDelete : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        private SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["PartyProductConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["user"] == null)
@@ -21,16 +22,16 @@ namespace PartyProduct
             else
             {
 
-            if (con.State == ConnectionState.Open)
+            if (sqlConnection.State == ConnectionState.Open)
             {
-                con.Close();
+                sqlConnection.Close();
             }
-            con.Open();
+            sqlConnection.Open();
 
 
             if (Request.QueryString["id"] != null)
             {
-                SqlCommand cmd = con.CreateCommand();
+                SqlCommand cmd = sqlConnection.CreateCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "delete from product where productId='" + Request.QueryString["id"].ToString() + "'";
                 cmd.ExecuteNonQuery();

@@ -11,7 +11,7 @@ namespace PartyProduct
 {
     public partial class WebForm4 : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        SqlConnection sqlConnection = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["user"] == null)
@@ -21,11 +21,11 @@ namespace PartyProduct
             else
             {
 
-            if (con.State == ConnectionState.Open)
+            if (sqlConnection.State == ConnectionState.Open)
             {
-                con.Close();
+                sqlConnection.Close();
             }
-            con.Open();
+            sqlConnection.Open();
             }
         }
 
@@ -42,7 +42,7 @@ namespace PartyProduct
             }
             else
             {
-                SqlCommand cmd = con.CreateCommand();
+                SqlCommand cmd = sqlConnection.CreateCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "insert into party values('"+ partyNameTextBox.Text+"')";
                 DisplayAlert("Party Added Successfully...");

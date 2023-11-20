@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -11,12 +12,12 @@ namespace PartyProduct
 {
     public partial class signup : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        private SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["PartyProductConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (con.State == ConnectionState.Open)
+            if (sqlConnection.State == ConnectionState.Open)
             {
-                con.Close();
+                sqlConnection.Close();
             }
             
         }
@@ -33,8 +34,8 @@ namespace PartyProduct
             else
             {
                 bool flag = false;
-                SqlCommand cmd = new SqlCommand("select * from users", con);
-                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from users", sqlConnection);
+                sqlConnection.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
                 {
@@ -44,7 +45,7 @@ namespace PartyProduct
                         break;
                     }
                 }
-                con.Close();
+                sqlConnection.Close();
                 if (flag)
                 {
                     DisplayAlert("User Already Exists...");
@@ -52,13 +53,13 @@ namespace PartyProduct
                 }
                 else
                 {
-                    con.Open();
-                    SqlCommand ins = new SqlCommand("insert into users values(@username,@password)", con);
+                    sqlConnection.Open();
+                    SqlCommand ins = new SqlCommand("insert into users values(@username,@password)", sqlConnection);
                     ins.Parameters.AddWithValue("@username", username);
                     ins.Parameters.AddWithValue("@password", password);
                     ins.ExecuteNonQuery();
                     DisplayAlert1("User Created Successfully...");
-                    con.Close();
+                    sqlConnection.Close();
                 }
             }
 

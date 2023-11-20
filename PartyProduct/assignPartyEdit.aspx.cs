@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -11,7 +12,8 @@ namespace PartyProduct
 {
     public partial class WebForm8 : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        
+        private SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["PartyProductConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["user"] == null)
@@ -37,8 +39,8 @@ namespace PartyProduct
             int partyid = -1;
             int productid = -1;
             string product = ProductNameDropDown.Items[ProductNameDropDown.SelectedIndex].Text;
-            SqlCommand cm = new SqlCommand("select * from party", con);
-            con.Open();
+            SqlCommand cm = new SqlCommand("select * from party", sqlConnection);
+            sqlConnection.Open();
             SqlDataReader sdr = cm.ExecuteReader();
             while (sdr.Read())
             {
@@ -48,10 +50,10 @@ namespace PartyProduct
                     break;
                 }
             }
-            con.Close();
+            sqlConnection.Close();
 
-            SqlCommand cmd = new SqlCommand("select * from product", con);
-            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from product", sqlConnection);
+            sqlConnection.Open();
             SqlDataReader sdr1 = cmd.ExecuteReader();
             while (sdr1.Read())
             {
@@ -61,15 +63,15 @@ namespace PartyProduct
                     break;
                 }
             }
-            con.Close();
+            sqlConnection.Close();
 
-            con.Open();
-            SqlCommand ins = new SqlCommand("insert into assignparty values(@partyid,@productid)",con);
+            sqlConnection.Open();
+            SqlCommand ins = new SqlCommand("insert into assignparty values(@partyid,@productid)", sqlConnection);
             ins.Parameters.AddWithValue("@partyid", partyid);
             ins.Parameters.AddWithValue("@productid", productid);
             ins.ExecuteNonQuery();
             DisplayAlert("Assignation done....");
-            con.Close();
+            sqlConnection.Close();
         }
         protected virtual void DisplayAlert(string message)
         {

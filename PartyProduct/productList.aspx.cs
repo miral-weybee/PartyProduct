@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -11,7 +12,7 @@ namespace PartyProduct
 {
     public partial class WebForm5 : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        private SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["PartyProductConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["user"] == null)
@@ -21,20 +22,20 @@ namespace PartyProduct
             else
             {
 
-            if (con.State == ConnectionState.Open)
+            if (sqlConnection.State == ConnectionState.Open)
             {
-                con.Close();
+                sqlConnection.Close();
             }
 
 
             if (!IsPostBack)
             {
-                SqlCommand cmd = new SqlCommand("select * from product order by productname", con);
-                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from product order by productname", sqlConnection);
+                sqlConnection.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
                 ProductRepeater.DataSource = sdr;
                 ProductRepeater.DataBind();
-                con.Close();
+                sqlConnection.Close();
             }
             }
         }

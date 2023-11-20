@@ -10,7 +10,7 @@
             <asp:DropDownList ID="DropDownList1" runat="server" Height="30px" Width="170px" DataSourceID="SqlDataSource1" DataTextField="productName" DataValueField="productName">
             </asp:DropDownList>
             
-            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString3 %>" SelectCommand="SELECT [productName] FROM [product]"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString %>" SelectCommand="SELECT [productName] FROM [product]"></asp:SqlDataSource>
             
         </div>
         <div style="display:flex;justify-content:center;align-items:center;gap:1em;margin-top:1em">

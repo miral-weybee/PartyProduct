@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data.SqlClient;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace PartyProduct
 {
     public partial class WebForm12 : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        private SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["PartyProductConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (con.State == ConnectionState.Open)
+            if (sqlConnection.State == ConnectionState.Open)
             {
-                con.Close();
+                sqlConnection.Close();
             }
         }
 
@@ -31,8 +27,8 @@ namespace PartyProduct
             else
             {
                 bool flag = false;
-                SqlCommand cmd = new SqlCommand("select * from users", con);
-                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from users", sqlConnection);
+                sqlConnection.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
                 {
@@ -46,12 +42,12 @@ namespace PartyProduct
                 {
                     Session["user"] = username;
                     Response.Redirect("partyList.aspx");
-                    con.Close();
+                    sqlConnection.Close();
                 }
                 else
                 {
                     DisplayAlert("Incorrect Username or Password...");
-                    con.Close();
+                    sqlConnection.Close();
                 }
             }
             

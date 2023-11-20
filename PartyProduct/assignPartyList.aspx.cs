@@ -6,12 +6,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
+using System.Configuration;
 
 namespace PartyProduct
 {
     public partial class WebForm7 : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        private SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["PartyProductConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["user"] == null)
@@ -21,20 +22,20 @@ namespace PartyProduct
             else
             {
 
-            if (con.State == ConnectionState.Open)
+            if (sqlConnection.State == ConnectionState.Open)
             {
-                con.Close();
+                sqlConnection.Close();
             }
 
 
             if (!IsPostBack)
             {
-                SqlCommand cmd = new SqlCommand("select assignPartyId,partyName,productName from assignParty inner join party on assignParty.partyId = party.partyId inner join product on assignParty.productId = product.productId", con);
-                con.Open();
+                SqlCommand cmd = new SqlCommand("select assignPartyId,partyName,productName from assignParty inner join party on assignParty.partyId = party.partyId inner join product on assignParty.productId = product.productId", sqlConnection);
+                sqlConnection.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
                 Repeater1.DataSource = sdr;
                 Repeater1.DataBind();
-                con.Close();
+                sqlConnection.Close();
             }
             }
         }

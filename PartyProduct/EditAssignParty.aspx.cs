@@ -6,12 +6,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
+using System.Configuration;
 
 namespace PartyProduct
 {
     public partial class EditAssignParty : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        
+        private SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["PartyProductConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["user"] == null)
@@ -21,16 +23,16 @@ namespace PartyProduct
             else
             {
 
-            if (con.State == ConnectionState.Open)
+            if (sqlConnection.State == ConnectionState.Open)
             {
-                con.Close();
+                sqlConnection.Close();
             }
 
 
             if (Request.QueryString["id"] != null)
             {
-                SqlCommand cmd = new SqlCommand("select partyName,productName from assignParty inner join party on assignParty.partyId = party.partyId inner join product on assignParty.productId = product.productId where assignpartyid="+ Convert.ToInt32(Request.QueryString["id"].ToString())+ "", con);
-                con.Open();
+                SqlCommand cmd = new SqlCommand("select partyName,productName from assignParty inner join party on assignParty.partyId = party.partyId inner join product on assignParty.productId = product.productId where assignpartyid="+ Convert.ToInt32(Request.QueryString["id"].ToString())+ "", sqlConnection);
+                sqlConnection.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
                 {
@@ -39,7 +41,7 @@ namespace PartyProduct
                 }
                 PartyNameDropDown.Enabled = false;
                 ProductNameDropDown.Enabled = false;
-                con.Close();
+                sqlConnection.Close();
             }else
             {
                 DisplayAlert("Not a valid request");
@@ -53,8 +55,8 @@ namespace PartyProduct
             int partyid = -1;
             int productid = -1;
             string product = DropDownList2.Items[DropDownList2.SelectedIndex].Text;
-            SqlCommand cm = new SqlCommand("select * from party", con);
-            con.Open();
+            SqlCommand cm = new SqlCommand("select * from party", sqlConnection);
+            sqlConnection.Open();
             SqlDataReader sdr = cm.ExecuteReader();
             while (sdr.Read())
             {
@@ -64,10 +66,10 @@ namespace PartyProduct
                     break;
                 }
             }
-            con.Close();
+            sqlConnection.Close();
 
-            SqlCommand cmd = new SqlCommand("select * from product", con);
-            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from product", sqlConnection);
+            sqlConnection.Open();
             SqlDataReader sdr1 = cmd.ExecuteReader();
             while (sdr1.Read())
             {
@@ -77,15 +79,15 @@ namespace PartyProduct
                     break;
                 }
             }
-            con.Close();
+            sqlConnection.Close();
 
-            con.Open();
-            SqlCommand ins = new SqlCommand("update assignparty set partyid=@partyid,productid=@productid where assignpartyid="+Request.QueryString["id"].ToString()+"", con);
+            sqlConnection.Open();
+            SqlCommand ins = new SqlCommand("update assignparty set partyid=@partyid,productid=@productid where assignpartyid="+Request.QueryString["id"].ToString()+"", sqlConnection);
             ins.Parameters.AddWithValue("@partyid", partyid);
             ins.Parameters.AddWithValue("@productid", productid);
             ins.ExecuteNonQuery();
             DisplayAlert("Assignation Completed...");
-            con.Close();
+            sqlConnection.Close();
         }
         protected virtual void DisplayAlert(string message)
         {

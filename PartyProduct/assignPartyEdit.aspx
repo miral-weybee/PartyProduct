@@ -21,7 +21,7 @@
             <asp:DropDownList ID="ProductNameDropDown" runat="server" OnSelectedIndexChanged="DropDownList4_SelectedIndexChanged" Height="31px" Width="170px" DataSourceID="SqlDataSource2" DataTextField="productName" DataValueField="productName">
                 
             </asp:DropDownList>
-            <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString2 %>" SelectCommand="SELECT [productName] FROM [product]"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString %>" SelectCommand="SELECT [productName] FROM [product]"></asp:SqlDataSource>
         </div>
         <div style="display: flex; justify-content: center; align-items: center; gap: 1em; margin-top: 1em">
             <asp:Button ID="AssignPartySavebtn" class="btn btn-success" runat="server" Text="Save" OnClick="Button1_Click" />

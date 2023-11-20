@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,7 +13,7 @@ namespace PartyProduct
 {
     public partial class WebForm10 : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection("data source=.; database=PartyProduct; integrated security=SSPI");
+        private SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["PartyProductConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["user"] == null)
@@ -41,8 +42,8 @@ namespace PartyProduct
             else
             {
                 string product = DropDownList1.Items[DropDownList1.SelectedIndex].Text;
-                SqlCommand productcmd = new SqlCommand("select * from product", con);
-                con.Open();
+                SqlCommand productcmd = new SqlCommand("select * from product", sqlConnection);
+                sqlConnection.Open();
                 SqlDataReader sdr1 = productcmd.ExecuteReader();
                 while (sdr1.Read())
                 {
@@ -52,15 +53,15 @@ namespace PartyProduct
                         break;
                     }
                 }
-                con.Close();
+                sqlConnection.Close();
 
-                con.Open();
-                SqlCommand cmd = con.CreateCommand();
+                sqlConnection.Open();
+                SqlCommand cmd = sqlConnection.CreateCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "insert into productRate values('"+pr_id+"','"+TextBox1.Text+"','"+TextBox2.Text+"')";
                 cmd.ExecuteNonQuery();
                 DisplayAlert("Product Rate Added Successfully....");
-                con.Close();
+                sqlConnection.Close();
             }
         }
         protected virtual void DisplayAlert(string message)
