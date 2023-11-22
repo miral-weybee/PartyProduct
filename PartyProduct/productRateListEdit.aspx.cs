@@ -29,7 +29,7 @@ namespace PartyProduct
 
         protected void productRateListEditSavebtn_Click(object sender, EventArgs e)
         {
-            int pr_id = -1;
+            int productId = -1;
             if (TextBox1.Text == string.Empty || 
                 TextBox2.Text == string.Empty || 
                 Convert.ToInt32(TextBox1.Text) < 0 || 
@@ -49,7 +49,7 @@ namespace PartyProduct
                 {
                     if (sdr1.GetString(1) == product)
                     {
-                        pr_id = sdr1.GetInt32(0);
+                        productId = sdr1.GetInt32(0);
                         break;
                     }
                 }
@@ -58,7 +58,7 @@ namespace PartyProduct
                 sqlConnection.Open();
                 SqlCommand cmd = sqlConnection.CreateCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "insert into productRate values('"+pr_id+"','"+TextBox1.Text+"','"+TextBox2.Text+"')";
+                cmd.CommandText = "insert into productRate values('"+productId+"','"+TextBox1.Text+"','"+TextBox2.Text+"')";
                 cmd.ExecuteNonQuery();
                 DisplayAlert("Product Rate Added Successfully....");
                 sqlConnection.Close();
