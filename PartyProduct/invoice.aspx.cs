@@ -93,7 +93,7 @@ namespace PartyProduct
             sqlConnection.Open();
             decimal sum = 0;
             SqlCommand cmd2 = new SqlCommand("select invoiceId,partyName,productName,currentRate,qty,(qty*currentRate) as total from invoice inner join party on party.partyId=invoice.partyId inner join product on invoice.productId=product.productId", sqlConnection);
-            SqlDataReader sdr2 = cmd1.ExecuteReader();
+            SqlDataReader sdr2 = cmd2.ExecuteReader();
             while (sdr2.Read())
             {
                 sum += sdr2.GetDecimal(5);
