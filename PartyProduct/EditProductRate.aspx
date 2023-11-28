@@ -35,7 +35,7 @@
         </div>
         <div style="display: flex; justify-content: center; align-items: center; gap: 1em; margin-top: 1em">
             <asp:Button ID="productRateListEditSavebtn" class="btn btn-success" runat="server" Text="Save" OnClick="productRateListEditSavebtn_Click" />
-            <asp:Button ID="productRateListEditCancelbtn" class="btn btn-secondary" runat="server" Text="Cancel" />
+            <asp:Button ID="productRateListEditCancelbtn" class="btn btn-secondary" runat="server" Text="Cancel" OnClick="productRateListEditCancelbtn_Click" />
         </div>
         <hr />
     </div>

@@ -73,8 +73,11 @@ namespace PartyProduct
             DisplayAlert("Product Rate updated successfully....");
             sqlConnection.Close();
         }
-            
 
+        protected void productRateListEditCancelbtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("productRateList.aspx");
+        }
     }
 }
     
