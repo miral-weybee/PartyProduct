@@ -27,7 +27,7 @@
             &nbsp;<asp:DropDownList ID="DropDownList1" runat="server" Height="31px" Width="169px" DataSourceID="SqlDataSource1" DataTextField="partyName" DataValueField="partyName">
             </asp:DropDownList>
 
-            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString5 %>" SelectCommand="SELECT [partyName] FROM [party]"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString %>" SelectCommand="SELECT [partyName] FROM [party]"></asp:SqlDataSource>
 
         </div>
         <div style="display: flex; justify-content: center; align-items: center; gap: 1em; margin-top: 1em">
@@ -35,7 +35,7 @@
 
             <asp:DropDownList ID="DropDownList2" runat="server" Height="31px" Width="169px" DataSourceID="SqlDataSource2" DataTextField="productName" DataValueField="productName">
             </asp:DropDownList>
-            <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString6 %>" SelectCommand="SELECT [productName] FROM [product]"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString %>" SelectCommand="SELECT [productName] FROM [product]"></asp:SqlDataSource>
         </div>
 
         <div style="display: flex; justify-content: center; align-items: center; gap: 1em; margin-top: 1em">

@@ -23,7 +23,7 @@
             <asp:Label ID="Label4" runat="server" Text="New Product Name:"></asp:Label>
             <asp:DropDownList ID="DropDownList2" runat="server" Height="30px" Width="170px" DataSourceID="SqlDataSource1" DataTextField="productName" DataValueField="productName">
             </asp:DropDownList>
-            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString7 %>" SelectCommand="SELECT [productName] FROM [product]"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:PartyProductConnectionString %>" SelectCommand="SELECT [productName] FROM [product]"></asp:SqlDataSource>
         </div>
         <div style="display: flex; justify-content: center; align-items: center; gap: 1em; margin-top: 1em">
             <asp:Label ID="Label5" runat="server" Text="New Product Rate:"></asp:Label>
