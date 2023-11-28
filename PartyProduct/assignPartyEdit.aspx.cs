@@ -35,34 +35,14 @@ namespace PartyProduct
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            string party = PartyNameDropDown.Items[PartyNameDropDown.SelectedIndex].Text;
-            int partyid = -1;
-            int productid = -1;
-            string product = ProductNameDropDown.Items[ProductNameDropDown.SelectedIndex].Text;
-            SqlCommand cm = new SqlCommand("select * from party", sqlConnection);
-            sqlConnection.Open();
-            SqlDataReader sdr = cm.ExecuteReader();
-            while (sdr.Read())
-            {
-                if(sdr.GetString(1) == party)
-                {
-                    partyid = sdr.GetInt32(0);
-                    break;
-                }
-            }
-            sqlConnection.Close();
+            string partyName = PartyNameDropDown.Items[PartyNameDropDown.SelectedIndex].Text;
+            string productName = ProductNameDropDown.Items[ProductNameDropDown.SelectedIndex].Text;
 
-            SqlCommand cmd = new SqlCommand("select * from product", sqlConnection);
+            SqlCommand cm = new SqlCommand("select * from party where partyName='"+partyName+"'", sqlConnection);
             sqlConnection.Open();
-            SqlDataReader sdr1 = cmd.ExecuteReader();
-            while (sdr1.Read())
-            {
-                if(sdr1.GetString(1) == product)
-                {
-                    productid = sdr1.GetInt32(0);
-                    break;
-                }
-            }
+            int partyid = (int)(cm.ExecuteScalar());
+            SqlCommand cmd = new SqlCommand("select * from product where productName='"+productName+"'", sqlConnection);
+            int productid = (int)(cmd.ExecuteScalar());
             sqlConnection.Close();
 
             sqlConnection.Open();

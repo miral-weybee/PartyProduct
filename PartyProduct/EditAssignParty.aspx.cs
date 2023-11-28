@@ -52,36 +52,12 @@ namespace PartyProduct
         protected void AssignPartySavebtn_Click(object sender, EventArgs e)
         {
             string party = DropDownList1.Items[DropDownList1.SelectedIndex].Text;
-            int partyid = -1;
-            int productid = -1;
             string product = DropDownList2.Items[DropDownList2.SelectedIndex].Text;
-            SqlCommand cm = new SqlCommand("select * from party", sqlConnection);
+            SqlCommand cm = new SqlCommand("select * from party where partyName='"+party+"'", sqlConnection);
             sqlConnection.Open();
-            SqlDataReader sdr = cm.ExecuteReader();
-            while (sdr.Read())
-            {
-                if (sdr.GetString(1) == party)
-                {
-                    partyid = sdr.GetInt32(0);
-                    break;
-                }
-            }
-            sqlConnection.Close();
-
-            SqlCommand cmd = new SqlCommand("select * from product", sqlConnection);
-            sqlConnection.Open();
-            SqlDataReader sdr1 = cmd.ExecuteReader();
-            while (sdr1.Read())
-            {
-                if (sdr1.GetString(1) == product)
-                {
-                    productid = sdr1.GetInt32(0);
-                    break;
-                }
-            }
-            sqlConnection.Close();
-
-            sqlConnection.Open();
+            int partyid = (int)cm.ExecuteScalar();
+            SqlCommand cmd = new SqlCommand("select * from product where productName='"+product+"'", sqlConnection);
+            int productid = (int)cmd.ExecuteScalar();
             SqlCommand ins = new SqlCommand("update assignparty set partyid=@partyid,productid=@productid where assignpartyid="+Request.QueryString["id"].ToString()+"", sqlConnection);
             ins.Parameters.AddWithValue("@partyid", partyid);
             ins.Parameters.AddWithValue("@productid", productid);

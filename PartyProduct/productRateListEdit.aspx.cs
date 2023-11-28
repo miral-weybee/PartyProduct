@@ -29,7 +29,7 @@ namespace PartyProduct
 
         protected void productRateListEditSavebtn_Click(object sender, EventArgs e)
         {
-            int productId = -1;
+            
             if (TextBox1.Text == string.Empty || 
                 TextBox2.Text == string.Empty || 
                 Convert.ToInt32(TextBox1.Text) < 0 || 
@@ -42,20 +42,9 @@ namespace PartyProduct
             else
             {
                 string product = DropDownList1.Items[DropDownList1.SelectedIndex].Text;
-                SqlCommand productcmd = new SqlCommand("select * from product", sqlConnection);
+                SqlCommand productcmd = new SqlCommand("select * from product where productName='"+product+"'", sqlConnection);
                 sqlConnection.Open();
-                SqlDataReader sdr1 = productcmd.ExecuteReader();
-                while (sdr1.Read())
-                {
-                    if (sdr1.GetString(1) == product)
-                    {
-                        productId = sdr1.GetInt32(0);
-                        break;
-                    }
-                }
-                sqlConnection.Close();
-
-                sqlConnection.Open();
+                int productId = (int)productcmd.ExecuteScalar();
                 SqlCommand cmd = sqlConnection.CreateCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "insert into productRate values('"+productId+"','"+TextBox1.Text+"','"+TextBox2.Text+"')";

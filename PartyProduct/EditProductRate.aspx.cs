@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
 using System.Configuration;
+using System.Runtime.InteropServices;
 
 namespace PartyProduct
 {
@@ -64,19 +65,8 @@ namespace PartyProduct
         protected void productRateListEditSavebtn_Click(object sender, EventArgs e)
         {
             string product = DropDownList2.Items[DropDownList2.SelectedIndex].Text;
-            int productid = -1;
-            SqlCommand cmd = new SqlCommand("select * from product", sqlConnection);
-            sqlConnection.Open();
-            SqlDataReader sdr1 = cmd.ExecuteReader();
-            while (sdr1.Read())
-            {
-                if (sdr1.GetString(1) == product)
-                {
-                    productid = sdr1.GetInt32(0);
-                    break;
-                }
-            }
-            sqlConnection.Close();
+            SqlCommand cmd = new SqlCommand("select * from product where productName='"+product+"'", sqlConnection);
+            int productid = (int)cmd.ExecuteScalar();
             SqlCommand cmd1 = new SqlCommand("update productrate set productid="+productid+ ",rate="+ TextBox3 .Text+ ",dateofrate='"+ TextBox4.Text+ "'", sqlConnection);
             sqlConnection.Open();
             cmd1.ExecuteNonQuery();

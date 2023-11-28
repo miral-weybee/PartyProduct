@@ -33,20 +33,12 @@ namespace PartyProduct
             }
             else
             {
-                bool flag = false;
-                SqlCommand cmd = new SqlCommand("select * from users", sqlConnection);
+                
+                SqlCommand cmd = new SqlCommand("select * from users where username='"+username+"'", sqlConnection);
                 sqlConnection.Open();
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    if (sdr.GetString(1) == username)
-                    {
-                        flag = true;
-                        break;
-                    }
-                }
+                bool user = (bool)cmd.ExecuteScalar();
                 sqlConnection.Close();
-                if (flag)
+                if (user)
                 {
                     DisplayAlert("User Already Exists...");
 
